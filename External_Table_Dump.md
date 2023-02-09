@@ -24,8 +24,8 @@
     BEGIN
     DBMS_CLOUD.CREATE_CREDENTIAL(
         credential_name => 'ADWTEST_CRED',
-        username => 'oracleidentitycloudservice/youngmin.kwon@oracle.com',
-        password => 'wXULJuXDOZY4-g{MH;;k' );
+        username => 'username@abc.com',
+        password => 'wXUsdfsadfasJuXDOZY4-g{MH;;k' );
     END;
     /
     ```

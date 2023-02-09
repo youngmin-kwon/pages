@@ -120,7 +120,7 @@ alter session set current_schema=sys;
 - `dbms_cloud_install.sql` 파일을 `/home/oracle/dbc` 디렉토리에 생성하였다면, 다음의 명령을 수행한다.
 
 ```
-$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -u sys/<your_sys_password> --force_pdb_mode 'READ WRITE' -b dbms_cloud_install -d /home/oracle/dbc -l /home/oracle/dbcdbms_cloud_install.sql
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -u sys/"Welcome3#Welcome3#" --force_pdb_mode 'READ WRITE' -b dbms_cloud_install -d /home/oracle/dbc -l /home/oracle/dbc dbms_cloud_install.sql
 ```
     수행 후 에러 발생 여부 확인 
 
@@ -165,9 +165,13 @@ If you are already having a wallet for SSL certificates then you do not have to 
 
 ```
 cd /opt/oracle/dcs/commonstore/wallets/ssl
+
+tar xvf /tmp/dcs_certs.tar
+
 orapki wallet create -wallet . -pwd Oracle123456 -auto_login
+
 #! /bin/bash
-for i in 'ls <location of cert files>/*cer'
+for i in `ls <location of cert files>/*cer`
 do
 orapki wallet add -wallet . -trusted_cert -cert $i -pwd Oracle123456
 done
@@ -215,6 +219,8 @@ Assuming you stored your wallet at the suggested location mentioned in the walle
 sqlnet.ora 파일에 다음 추가
 
 ```
+# /u01/app/19.0.0.0/grid/network/admin/sqlnet.ora
+
 WALLET_LOCATION=
 (SOURCE=
     (METHOD=FILE)
@@ -247,7 +253,8 @@ define clouduser=C##CLOUD$SERVICE
 
 -- CUSTOMER SPECIFIC SETUP, NEEDS TO BE PROVIDED BY THE CUSTOMER
 -- - SSL Wallet directory
-define sslwalletdir=<Set SSL Wallet Directory>
+-- define sslwalletdir=<Set SSL Wallet Directory>
+define sslwalletdir=/opt/oracle/dcs/commonstore/wallets/ssl
 
 --
 -- UNCOMMENT AND SET THE PROXY SETTINGS VARIABLES IF YOUR ENVIRONMENT NEEDS PROXYS
@@ -337,14 +344,17 @@ Wrap the following commands into a sql script and execute it as user SYS either 
 Please ensure to set the variables for your environment appropriately. If you do not set them correctly then the sample procedure will not work, independent of whether or not you have set up DBMS_CLOUD correctly.
 
 ```
+-- verify.sql
 
 -- you must not change the owner of the functionality to avoid future issues
 define clouduser=C##CLOUD$SERVICE
 
 -- CUSTOMER SPECIFIC SETUP, NEEDS TO BE PROVIDED BY THE CUSTOMER
 -- - SSL Wallet directory and password
-define sslwalletdir=<Set SSL Wallet Directory>
-define sslwalletpwd=<Set SSL Wallet password>
+-- define sslwalletdir=<Set SSL Wallet Directory>
+-- define sslwalletpwd=<Set SSL Wallet password>
+define sslwalletdir=/opt/oracle/dcs/commonstore/wallets/ssl
+define sslwalletpwd=Oracle123456
 
 -- create and run this procedure as owner of the ACLs, which is the future owner
 -- of DBMS_CLOUD
@@ -409,6 +419,17 @@ If you receive an error then your installation was not done properly. Please cor
 The following privileges are needed for a user or role to use DBMS_CLOUD functionality. It is recommended to grant the necessary privileges through a role to make the management of the necessary privileges easier for multiple users.
 
 The example script will use a local role CLOUD_USER and grant privileges to a local user SCOTT. You can modify this script as seen fit for your pluggable database environment and execute it as privileged administrator, e.g. SYS or SYSTEM, within your pluggable database.
+
+SCOTT 사용자 생성
+```
+conn / as sysdba
+alter session set container=pdb1;
+
+create user scott identified by Welcome3#Welcome3#;
+grant connect, resource, unlimited tablespace to scott;
+```
+
+SCOTT 사용자에게 권한 설정
 
 ```
 set verify off
@@ -483,7 +504,8 @@ define cloudrole=CLOUD_USER
 
 -- CUSTOMER SPECIFIC SETUP, NEEDS TO BE PROVIDED BY THE CUSTOMER
 -- - SSL Wallet directory
-define sslwalletdir=<Set SSL Wallet Directory>
+--define sslwalletdir=<Set SSL Wallet Directory>
+define sslwalletdir=/opt/oracle/dcs/commonstore/wallets/ssl
 
 --
 -- UNCOMMENT AND SET THE PROXY SETTINGS VARIABLES IF YOUR ENVIRONMENT NEEDS PROXYS
@@ -544,13 +566,14 @@ define clouduser=SCOTT
 
 -- CUSTOMER SPECIFIC SETUP, NEEDS TO BE PROVIDED BY THE CUSTOMER
 -- - SSL Wallet directory
-define sslwalletdir=<Set SSL Wallet Directory>
+--define sslwalletdir=<Set SSL Wallet Directory>
+define sslwalletdir=/opt/oracle/dcs/commonstore/wallets/ssl
 
 -- Proxy definition
-define proxy_uri=<your proxy URI address>
-define proxy_host=<your proxy DNS name>
-define proxy_low_port=<your_proxy_low_port>
-define proxy_high_port=<your_proxy_high_port>
+--define proxy_uri=<your proxy URI address>
+--define proxy_host=<your proxy DNS name>
+--define proxy_low_port=<your_proxy_low_port>
+--define proxy_high_port=<your_proxy_high_port>
 
 -- Create New ACL / ACE s
 begin
@@ -604,12 +627,18 @@ To access data in Object Store that is not public you need to authenticate with 
 Assuming you have created an auth token you now need to create a credential object in your database schema for authentication:
 
 ```
+connect scott/Welcome3#Welcome3#@oradb19_pdb1
+
+BEGIN
+DBMS_CLOUD.DROP_CREDENTIAL('OBJ_CRED');
+END;
+/
+
 BEGIN
 DBMS_CLOUD.CREATE_CREDENTIAL(
-credential_name => 'your credential name',
-username => 'OCI within your tenancy',
-password => 'auth token generated for OCI user'
-);
+    credential_name => 'OBJ_CRED',
+    username => 'username@mail.com',
+    password => 'Auth Token' );
 END;
 /
 ```
@@ -617,8 +646,109 @@ END;
 After creation of your credential object you should now be able to access the bucket in question in your tenancy that the OCI user in your tenancy has privileges for:
 
 ```
-select * from dbms_cloud.list_objects(<'CredentialName'>,'https://objectstorage.<region>.oraclecloud.com/n/<ObjectStorageNameSpace>/b/<BucketName>/o/');
+select object_name from dbms_cloud.list_objects('OBJ_CRED', 'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/' );
 ```
+
+- External Table 생성
+
+```
+drop table channels_ext;
+
+BEGIN
+DBMS_CLOUD.CREATE_EXTERNAL_TABLE(
+    table_name =>'CHANNELS_EXT',
+    credential_name =>'OBJ_CRED',
+    file_uri_list =>'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel_xt.dmp',
+    format => json_object('type' value 'datapump', 'rejectlimit' value '1'),
+    column_list => 'CHANNEL_ID CHAR(1), CHANNEL_DESC VARCHAR2(20), CHANNEL_CLASS VARCHAR2(20)' );
+END;
+/
+
+select * from channels_ext;
+
+-- 에러 발생 시 확인
+BEGIN
+DBMS_CLOUD.VALIDATE_EXTERNAL_TABLE (
+    table_name => 'CHANNELS_EXT' );
+END;
+/
+
+```
+
+-- Sample Table & Data 
+
+CREATE TABLE channels
+(
+    channel_id 		char(1),
+    channel_desc 	varchar2(20),
+    channel_class 	varchar2(20)
+);
+
+insert into channels values ('S','Direct Sales', 'Direct' );
+insert into channels values ('T','Tele Sales', 'Direct' );
+insert into channels values ('C','Catalog', 'Indirect' );
+insert into channels values ('I','Internet', 'Indirect' );
+insert into channels values ('P','Partners', 'Others' );
+
+commit;
+
+BEGIN
+DBMS_CLOUD.EXPORT_DATA(
+    credential_name =>'OBJ_CRED',
+    file_uri_list =>'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel_dbcs.dmp',
+    format => json_object('type' value 'datapump'),
+    query => 'SELECT * FROM channels'
+);
+END;
+/
+
+```
+drop table channels_xt;
+
+BEGIN
+DBMS_CLOUD.CREATE_EXTERNAL_TABLE(
+    table_name =>'CHANNELS_XT',
+    credential_name =>'OBJ_CRED',
+    file_uri_list =>'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channels_xt.dmp',
+    format => json_object('type' value 'datapump', 'rejectlimit' value '1'),
+    column_list => 'CHANNEL_ID CHAR(1), CHANNEL_DESC VARCHAR2(20), CHANNEL_CLASS VARCHAR2(20)' );
+END;
+/
+
+select * from channels_xt;
+```
+
+
+drop table emp_ext;
+
+begin
+  dbms_cloud.create_external_table(
+    table_name      => 'emp_ext',
+    credential_name => 'OBJ_CRED',
+    file_uri_list   => 'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/emp.dat',
+    column_list     => 'empno     number(4),
+                        ename     varchar2(10),
+                        job       varchar2(9),
+                        mgr       number(4),
+                        hiredate  date,
+                        sal       number(7,2),
+                        comm      number(7,2),
+                        deptno    number(2)',
+    format          => json_object('ignoremissingcolumns' value 'true', 'removequotes' value 'true')
+ );
+end;
+/
+
+-- Export Data
+begin
+  dbms_cloud.export_data (
+    credential_name => 'OBJ_CRED',
+    file_uri_list   => 'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/emp.dmp',
+    query           => 'select * from emp_ext',
+    format          => json_object('type' value 'datapump')
+  );
+end;
+/
 
 ## Validate the proper user configuration and privilege (accessibility of wallet, privilege to use wallet, database-wide setting of wallet)
 
@@ -688,4 +818,197 @@ END;
 set serveroutput off
 drop procedure &clouduser..GET_PAGE;
 ```
+
+
+
+
+
+    CREATE TABLE channels_xt
+    ORGANIZATION EXTERNAL
+    (
+        TYPE ORACLE_DATAPUMP
+        DEFAULT DIRECTORY data_pump_dir
+        LOCATION ('channels_xt.dmp')
+    )
+    AS SELECT * FROM channels;
+
+
+
+BEGIN  
+   DBMS_CLOUD.EXPORT_DATA(
+      credential_name => 'OBJ_CRED',
+      file_uri_list   => 'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel.csv',
+      query           => 'SELECT * FROM DEPT',
+      format          => JSON_OBJECT('type' value 'csv')
+     );
+   END;
+/  
+
+
+begin
+  dbms_cloud.export_data (
+    credential_name => 'OBJ_CRED',
+    file_uri_list   => 'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channels_xxx.dmp',
+    query           => 'select * from channels',
+    format          => json_object('type' value 'datapump')
+  );
+end;
+/
+
+
+안녕하세요. 권영민입니다.
+
+
+
+
+
+BEGIN  
+   DBMS_CLOUD.EXPORT_DATA(
+      credential_name => 'OBJ_CRED',
+      file_uri_list   => 'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel.csv',
+      query           => 'SELECT * FROM CHANNELS',
+      format          => JSON_OBJECT('type' value 'csv')
+     );
+   END;
+/  
+
+begin
+  dbms_cloud.export_data (
+    credential_name => 'OBJ_CRED',
+    file_uri_list   => 'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel.json',
+    query           => 'select * from channels',
+    format          => '{"type" : "JSON"}'
+  );
+end;
+/
+
+
+BEGIN
+DBMS_CLOUD.CREATE_EXTERNAL_TABLE(
+    table_name =>'CHANNELS_CSV_EXT',
+    credential_name =>'OBJ_CRED',
+    file_uri_list =>'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel_1_20230127T030644730815Z.csv',
+    format          => json_object('type' value 'csv', 'skipheaders' value '1')
+    column_list => 'CHANNEL_ID CHAR(1), CHANNEL_DESC VARCHAR2(20), CHANNEL_CLASS VARCHAR2(20)' );
+END;
+/
+
+
+-- datapump dump 파일 External Table 생성
+
+SQL> BEGIN
+DBMS_CLOUD.CREATE_EXTERNAL_TABLE(
+    table_name =>'CHANNELS_DMP_EXT',
+    credential_name =>'OBJ_CRED',
+    file_uri_list =>'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel.dmp',
+    format => json_object('type' value 'datapump', 'rejectlimit' value '1'),
+    column_list => 'CHANNEL_ID CHAR(1), CHANNEL_DESC VARCHAR2(20), CHANNEL_CLASS VARCHAR2(20)' );
+END;
+/
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from channels_dmp_ext;
+select * from channels_dmp_ext
+*
+ERROR at line 1:
+ORA-29913: error in executing ODCIEXTTABLEOPEN callout
+ORA-29400: data cartridge error
+KUP-11010: unable to open at least one dump file for fetch
+
+==> 에러 발생. Datapump Dump 파일 External Table 활용 불가
+
+
+
+-- Text 파일(CSV) External Table 생성
+
+SQL> BEGIN
+DBMS_CLOUD.CREATE_EXTERNAL_TABLE(
+    table_name =>'CHANNELS_CSV_EXT',
+    credential_name =>'OBJ_CRED',
+    file_uri_list =>'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel.csv',
+    format          => json_object('type' value 'csv'),
+    column_list => 'CHANNEL_ID CHAR(1), CHANNEL_DESC VARCHAR2(20), CHANNEL_CLASS VARCHAR2(20)' );
+END;
+/
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from channels_csv_ext;
+
+C CHANNEL_DESC	       CHANNEL_CLASS
+- -------------------- --------------------
+C Catalog	       Indirect
+S Direct Sales	       Direct
+I Internet	       Indirect
+T Tele Sales	       Direct
+P Partners	       Others
+
+==> 정상 동작.
+
+
+-- DBMS_CLOUD.EXPORT_DATA 테스트 : DB 데이터를 Object Storage 로 바로 내리는 방법
+
+--> CSV 포맷으로 내리기
+
+BEGIN  
+DBMS_CLOUD.EXPORT_DATA(
+  credential_name => 'OBJ_CRED',
+  file_uri_list   => 'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel2.csv',
+  query           => 'SELECT * FROM CHANNELS',
+  format          => JSON_OBJECT('type' value 'csv')
+ );
+END;
+/  
+
+*
+ERROR at line 1:
+ORA-20000: Export operation is only allowed for Oracle Datapump
+ORA-06512: at "C##CLOUD$SERVICE.DBMS_CLOUD", line 1181
+ORA-06512: at "C##CLOUD$SERVICE.DBMS_CLOUD", line 3943
+ORA-06512: at "C##CLOUD$SERVICE.DBMS_CLOUD", line 3962
+ORA-06512: at line 2
+
+==> 에러 발생.
+
+--> Datapump 포맷으로 내리기
+
+BEGIN
+DBMS_CLOUD.EXPORT_DATA(
+    credential_name =>'OBJ_CRED',
+    file_uri_list =>'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channel2.dmp',
+    format => json_object('type' value 'datapump'),
+    query => 'SELECT * FROM channels'
+);
+END;
+/
+
+*
+ERROR at line 1:
+ORA-20000: ORA-29400: data cartridge error
+KUP-06006: The CREDENTIAL access parameter is not supported in populate mode.
+ORA-06512: at "C##CLOUD$SERVICE.DBMS_CLOUD", line 1185
+ORA-06512: at "C##CLOUD$SERVICE.DBMS_CLOUD", line 3943
+ORA-06512: at "C##CLOUD$SERVICE.DBMS_CLOUD", line 3962
+ORA-06512: at line 2
+
+==> 에러 발생. 
+
+
+
+
+
+
+
+
+
+SQL> BEGIN
+DBMS_CLOUD.CREATE_EXTERNAL_TABLE(
+    table_name =>'CHANNELS_DMP_EXT',
+    credential_name =>'OBJ_CRED',
+    file_uri_list =>'https://objectstorage.ap-seoul-1.oraclecloud.com/n/apackrsct01/b/dumpdata/o/channels_xt.dmp',
+    format => json_object('type' value 'datapump', 'rejectlimit' value '1'),
+    column_list => 'CHANNEL_ID CHAR(1), CHANNEL_DESC VARCHAR2(20), CHANNEL_CLASS VARCHAR2(20)' );
+END;
+/
 
