@@ -1,6 +1,9 @@
 
 # Using Cloud Links for Read Only Data Access on Autonomous Database
 
+[**Oracle Doc**](https://docs.oracle.com/en/cloud/paas/autonomous-database/adbsa/autonomous-cloud-links.html#GUID-918B48B3-0D1C-4CD5-AA04-380C043573B9)
+
+
 - Data Sharing with Autonomous Database
 
     ![Data Sharing with Autonomous Database](./images/adw_data_sharing.png)
