@@ -74,7 +74,7 @@
     
     ```
 
-3. Cloud Link 를 통해 공유할 데이터 등록
+3. **[SOURCE]** Cloud Link 를 통해 공유할 데이터 등록
 
     ```
     -- Connect CLSRC @ ADB1
