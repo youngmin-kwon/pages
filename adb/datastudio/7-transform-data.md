@@ -90,12 +90,6 @@ Watch the video below for a quick walk-through of the lab.
 
     ![screenshot of data flow edit page](images/image24_transform_entity.png)
 
-<!-- >**Note:** Import of data entities takes place automatically as part of data flow creation only for 
-    the first time you are using the connection. Other times you need to 
-    explicitly import the data entity definitions from your connection before 
-    creating the data flow. You can also import the QTEAM entities manually by right click and import 
-    entities menu. -->
-
 5.  Data Flow 편집 화면의 메뉴 정보는 다음과 같습니다. 
 
     1: 다양한 Transform을 조합하여 Data Flow를 생성하는 기본 편집 캔버스
@@ -223,8 +217,6 @@ Watch the video below for a quick walk-through of the lab.
     대상 테이블의 정확한지 확인하기 위해, 캔버스에서 대상 테이블을 클릭하고 오른쪽 상단 모서리를 클릭하여 속성 패널을 확장합니다.
 
     ![screenshot of creating target table entity](images/image45_target_drag_add.png)
-
-    <!--    ![screenshot of target properties](images/image45_target_property.png) -->
 
 23. **Column Mapping**을 클릭하고 Expression 정보를 확인합니다.  모든 컬럼이 매핑되어 있는지 확인하고, 변경하려는 경우 수동으로 편집할 수도 있습니다. 
     
