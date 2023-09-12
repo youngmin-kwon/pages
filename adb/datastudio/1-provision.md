@@ -68,20 +68,15 @@
 
 7. 네트워크 액세스 선택 : "Secure access from everywhere." 선택 
 
-<!--
-    ![Choose network access.](./images/Picture100-26e.png " ")
--->
-
 8. 라이센스 유형 선택 : __License Included__ 선택
-
-<!--    ![Choose a license type.](./images/license.png " ") -->
 
 9.  __Create Autonomous Database__ 클릭
 
     ![Click Create Autonomous Database.](./images/Picture100-27.png " ")
 
-10.   인스턴스 프로비저닝 작업은 몇 분 후 완료됨. 프로비저닝 완료 후 이름, 데이터베이스 버전, ECPU 수, 스토리지 크기를 포함한 인스턴스 세부 정보 확인 
-        ![Database instance homepage.](./images/Picture100-32.png " ")
+10. 인스턴스 프로비저닝 작업은 몇 분 후 완료됨.  
+    프로비저닝 완료 후 이름, 데이터베이스 버전, ECPU 수, 스토리지 크기를 포함한 인스턴스 세부 정보 확인 
+    ![Database instance homepage.](./images/Picture100-32.png " ")
 
 
 
