@@ -20,7 +20,7 @@ Data Studio 소개 워크숍입니다. 데이터 분석가가 Data Studio를 사
 
 ## Workshop 순서
 
-- [Lab 1. Autonomous Database 프로비저닝](./Lab 1. Autonomous Database 프로비저닝.md)
+- [Lab 1. Autonomous Database 프로비저닝](./Lab%201.%20Autonomous%20Database%20프로비저닝.md)
 
 - [Lab 2. 데이터베이스 사용자 생성 및 데모 데이터 로딩](./Lab%202.%20데이터베이스%20사용자%20생성%20및%20데모%20데이터%20로딩.md)
 
