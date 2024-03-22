@@ -24,7 +24,7 @@ Autonomous Database 에 내장된 **Data Transforms** 기능을 활용하여 �
 	![](./images/Pastedimage20240319175747.png)
 
 2. **SIGN in to Oracel Data Integrator** 화면에서 데이터베이스 사용자명 QTEAM 과 암호를 입력합니다.
-		**QTEAM / WElcome12345__ **
+	- **QTEAM / WElcome12345__**
 	
 	![](./images/Pastedimage20240319190654.png)
 
