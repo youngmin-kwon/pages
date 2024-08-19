@@ -125,9 +125,9 @@ create or replace json relational duality view department_dv as
 ```sql
 desc department_dv
 
-Name Null? Type   
----- ----- ----   
-DATA       JSON
+Name Null? Type   
+---- ----- ----   
+DATA       JSON
 ```
 
 생성된 Duality View 쿼리하면 참조된 테이블의 내용을 기반으로 시스템에서 생성된 여러 식별자와 JSON 데이터를 볼 수 있습니다.
@@ -135,13 +135,13 @@ DATA       JSON
 ```sql
 select * from department_dv;
 
-DATA                                                 
+DATA                                                 
 ------------------------------------------------------------------------------------------
-{"_id":10,"departmentName":"ACCOUNTING","location":"NEW YORK","employees":[{"employeeNumber":7782,"employeeName":"CLARK","job":"MANAGER","salary":2450},{"employeeNumber":7839,"employeeName":"KING","job":"PRESIDENT","salary":5000},{"employeeNumber":7934,"employeeName":"MILLER","job":"CLERK","salary":1300}],"_metadata":{"etag":"E546E2220E8F9620E36C2A7F8858D6F7","asof":"000000001F1C4FD4"}}
-                                                                                                                                                              
+{"_id":10,"departmentName":"ACCOUNTING","location":"NEW YORK","employees":[{"employeeNumber":7782,"employeeName":"CLARK","job":"MANAGER","salary":2450},{"employeeNumber":7839,"employeeName":"KING","job":"PRESIDENT","salary":5000},{"employeeNumber":7934,"employeeName":"MILLER","job":"CLERK","salary":1300}],"_metadata":{"etag":"E546E2220E8F9620E36C2A7F8858D6F7","asof":"000000001F1C4FD4"}}
+                                                                                                                                                              
 {"_id":20,"departmentName":"RESEARCH","location":"DALLAS","employees":[{"employeeNumber":7369,"employeeName":"SMITH","job":"CLERK","salary":800},{"employeeNumber":7566,"employeeName":"JONES","job":"MANAGER","salary":2975},{"employeeNumber":7788,"employeeName":"SCOTT","job":"ANALYST","salary":3000},{"employeeNumber":7876,"employeeName":"ADAMS","job":"CLERK","salary":1100},{"employeeNumber":7902,"employeeName":"FORD","job":"ANALYST","salary":3000}],"_metadata":{"etag":"8DAFACC22EC949A2C54B9F7BBE79B171","asof":"000000001F1C4FD4"}}
-                                                                                     
-{"_id":30,"departmentName":"SALES","location":"CHICAGO","employees":[{"employeeNumber":7499,"employeeName":"ALLEN","job":"SALESMAN","salary":1600},{"employeeNumber":7521,"employeeName":"WARD","job":"SALESMAN","salary":1250},{"employeeNumber":7654,"employeeName":"MARTIN","job":"SALESMAN","salary":1250},{"employeeNumber":7698,"employeeName":"BLAKE","job":"MANAGER","salary":2850},{"employeeNumber":7844,"employeeName":"TURNER","job":"SALESMAN","salary":1500},{"employeeNumber":7900,"employeeName":"JAMES","job":"CLERK","salary":950}],"_metadata":{"etag":"72D95F921FBC3FFC59C269B80EFBA5CF","asof":"000000001F1C4FD4"}}   
+                                                                                     
+{"_id":30,"departmentName":"SALES","location":"CHICAGO","employees":[{"employeeNumber":7499,"employeeName":"ALLEN","job":"SALESMAN","salary":1600},{"employeeNumber":7521,"employeeName":"WARD","job":"SALESMAN","salary":1250},{"employeeNumber":7654,"employeeName":"MARTIN","job":"SALESMAN","salary":1250},{"employeeNumber":7698,"employeeName":"BLAKE","job":"MANAGER","salary":2850},{"employeeNumber":7844,"employeeName":"TURNER","job":"SALESMAN","salary":1500},{"employeeNumber":7900,"employeeName":"JAMES","job":"CLERK","salary":950}],"_metadata":{"etag":"72D95F921FBC3FFC59C269B80EFBA5CF","asof":"000000001F1C4FD4"}}   
 
 {"_id":40,"departmentName":"OPERATIONS","location":"BOSTON","employees":[],"_metadata":{"etag":"6FAB9798FF405D87F0EB44456398A5D5","asof":"000000001F1C4FD4"}}  
 ```
@@ -152,82 +152,82 @@ JSON_SERIALIZE 함수를 사용하여 JSON 데이터를 사용자가 보기 좋�
 
 select json_serialize(d.data pretty) from department_dv d;
 
-JSON_SERIALIZE(D.DATAPRETTY)                    
+JSON_SERIALIZE(D.DATAPRETTY)                    
 ---------------------------------------------------------------------------------------------------------------
 {  
-  "_id" : 10,  
-  "_metadata" :  
-  {  
-    "etag" : "E546E2220E8F9620E36C2A7F8858D6F7",  
-    "asof" : "000000001F1CB62B"  
-  },  
-  "departmentName" : "ACCOUNTING",  
-  "location" : "NEW YORK",  
-  "employees" :  
-  [  
-    {  
-      "employeeNumber" : 7782,  
-      "employeeName" : "CLARK",  
-      "job" : "MANAGER",  
-      "salary" : 2450  
-    },  
-    {  
-      "employeeNumber" : 7839,  
-      "employeeName" : "KING",  
-      "job" : "PRESIDENT",  
-      "salary" : 5000  
-    },  
-    {  
-      "employeeNumber" : 7934,  
-      "employeeName" : "MILLER",  
-      "job" : "CLERK",  
-      "salary" : 1300  
-    }  
-  ]  
-}                                                                                                                                            
+  "_id" : 10,  
+  "_metadata" :  
+  {  
+    "etag" : "E546E2220E8F9620E36C2A7F8858D6F7",  
+    "asof" : "000000001F1CB62B"  
+  },  
+  "departmentName" : "ACCOUNTING",  
+  "location" : "NEW YORK",  
+  "employees" :  
+  [  
+    {  
+      "employeeNumber" : 7782,  
+      "employeeName" : "CLARK",  
+      "job" : "MANAGER",  
+      "salary" : 2450  
+    },  
+    {  
+      "employeeNumber" : 7839,  
+      "employeeName" : "KING",  
+      "job" : "PRESIDENT",  
+      "salary" : 5000  
+    },  
+    {  
+      "employeeNumber" : 7934,  
+      "employeeName" : "MILLER",  
+      "job" : "CLERK",  
+      "salary" : 1300  
+    }  
+  ]  
+}                                                                                                                                            
 {  
-  "_id" : 20,  
-  "_metadata" :  
-  {  
-    "etag" : "8DAFACC22EC949A2C54B9F7BBE79B171",  
-    "asof" : "000000001F1CB62B"  
-  },  
-  "departmentName" : "RESEARCH",  
-  "location" : "DALLAS",  
-  "employees" :  
-  [  
-    {  
-      "employeeNumber" : 7369,  
-      "employeeName" : "SMITH",  
-      "job" : "CLERK",  
-      "salary" : 800  
-    },  
-    {  
-      "employeeNumber" : 7566,  
-      "employeeName" : "JONES",  
-      "job" : "MANAGER",  
-      "salary" : 2975  
-    },  
-    {  
-      "employeeNumber" : 7788,  
-      "employeeName" : "SCOTT",  
-      "job" : "ANALYST",  
-      "salary" : 3000  
-    },  
-    {  
-      "employeeNumber" : 7876,  
-      "employeeName" : "ADAMS",  
-      "job" : "CLERK",  
-      "salary" : 1100  
-    },  
-    {  
-      "employeeNumber" : 7902,  
-      "employeeName" : "FORD",  
-      "job" : "ANALYST",  
-      "salary" : 3000  
-    }  
-  ]  
-}                                                                                                                 
+  "_id" : 20,  
+  "_metadata" :  
+  {  
+    "etag" : "8DAFACC22EC949A2C54B9F7BBE79B171",  
+    "asof" : "000000001F1CB62B"  
+  },  
+  "departmentName" : "RESEARCH",  
+  "location" : "DALLAS",  
+  "employees" :  
+  [  
+    {  
+      "employeeNumber" : 7369,  
+      "employeeName" : "SMITH",  
+      "job" : "CLERK",  
+      "salary" : 800  
+    },  
+    {  
+      "employeeNumber" : 7566,  
+      "employeeName" : "JONES",  
+      "job" : "MANAGER",  
+      "salary" : 2975  
+    },  
+    {  
+      "employeeNumber" : 7788,  
+      "employeeName" : "SCOTT",  
+      "job" : "ANALYST",  
+      "salary" : 3000  
+    },  
+    {  
+      "employeeNumber" : 7876,  
+      "employeeName" : "ADAMS",  
+      "job" : "CLERK",  
+      "salary" : 1100  
+    },  
+    {  
+      "employeeNumber" : 7902,  
+      "employeeName" : "FORD",  
+      "job" : "ANALYST",  
+      "salary" : 3000  
+    }  
+  ]  
+}                                                                                                                 
 
 ...
 ...
@@ -248,9 +248,9 @@ from department_dv d
 where d.data."_id" = 40;
 
 
-DEPARTMENTNAME LOCATION   
--------------- --------   
-OPERATIONS     BOSTON       
+DEPARTMENTNAME LOCATION   
+-------------- --------   
+OPERATIONS     BOSTON       
 ```
 
 ### DML 작업 (INSERT, UPDATE, DELETE)
@@ -283,41 +283,41 @@ from department_dv d
 where d."_id" = 50;
 
 JSON_SERIALIZE(D.DATAPRETTY)
-----------------------------------------------------------------------------------------------   
+----------------------------------------------------------------------------------------------   
 {  
-  "_id" : 50,  
-  "_metadata" :  
-  {  
-    "etag" : "77052B06E84B60749E410D5C2BA797DF",  
-    "asof" : "000000001F1FB366"  
-  },  
-  "departmentName" : "DBA",  
-  "location" : "BIRMINGHAM",  
-  "employees" :  
-  [  
-    {  
-      "employeeNumber" : 9999,  
-      "employeeName" : "HALL",  
-      "job" : "CLERK",  
-      "salary" : 500  
-    }  
-  ]  
+  "_id" : 50,  
+  "_metadata" :  
+  {  
+    "etag" : "77052B06E84B60749E410D5C2BA797DF",  
+    "asof" : "000000001F1FB366"  
+  },  
+  "departmentName" : "DBA",  
+  "location" : "BIRMINGHAM",  
+  "employees" :  
+  [  
+    {  
+      "employeeNumber" : 9999,  
+      "employeeName" : "HALL",  
+      "job" : "CLERK",  
+      "salary" : 500  
+    }  
+  ]  
 }
   
 
 -- INSERT 된 데이터를 테이블에서 조회 - DEPT / EMP
 select * from dept where deptno = 50;
 
-DEPTNO DNAME LOC          
------- ----- ----------   
-    50 DBA   BIRMINGHAM
+DEPTNO DNAME LOC          
+------ ----- ----------   
+    50 DBA   BIRMINGHAM
 
 
 select * from emp where deptno = 50;
 
-EMPNO ENAME JOB    MGR HIREDATE     SAL COMM DEPTNO   
------ ----- ----- ---- ------------ --- ---- ------   
- 9999 HALL  CLERK null null         500 null     50  
+EMPNO ENAME JOB    MGR HIREDATE     SAL COMM DEPTNO   
+----- ----- ----- ---- ------------ --- ---- ------   
+ 9999 HALL  CLERK null null         500 null     50  
 ```
 
 
@@ -352,34 +352,34 @@ where d.data."_id" = 40;
 
   
 JSON_SERIALIZE(D.DATAPRETTY)
---------------------------------------------------------------------------------------------------   
+--------------------------------------------------------------------------------------------------   
 {  
-  "_id" : 40,  
-  "_metadata" :  
-  {  
-    "etag" : "20922F89E067A817FE430BCD79246271",  
-    "asof" : "000000001F2691F8"  
-  },  
-  "departmentName" : "OPERATIONS",  
-  "location" : "BOSTON",  
-  "employees" :  
-  [  
-    {  
-      "employeeNumber" : 9998,  
-      "employeeName" : "HELLO",  
-      "job" : "CLERK",  
-      "salary" : 500  
-    }  
-  ]  
+  "_id" : 40,  
+  "_metadata" :  
+  {  
+    "etag" : "20922F89E067A817FE430BCD79246271",  
+    "asof" : "000000001F2691F8"  
+  },  
+  "departmentName" : "OPERATIONS",  
+  "location" : "BOSTON",  
+  "employees" :  
+  [  
+    {  
+      "employeeNumber" : 9998,  
+      "employeeName" : "HELLO",  
+      "job" : "CLERK",  
+      "salary" : 500  
+    }  
+  ]  
 }
   
 
 -- EMP 테이블에서 조회
 select * from emp where empno = 9998;
 
-EMPNO ENAME JOB    MGR HIREDATE     SAL COMM DEPTNO   
------ ----- ----- ---- ------------ --- ---- ------   
- 9998 HELLO CLERK null Invalid Date 500 null     40
+EMPNO ENAME JOB    MGR HIREDATE     SAL COMM DEPTNO   
+----- ----- ----- ---- ------------ --- ---- ------   
+ 9998 HELLO CLERK null Invalid Date 500 null     40
 
 ```
 
@@ -395,9 +395,9 @@ where d.data."_id" = 40;
 
 select * from dept where deptno = 40;
 
-DEPTNO DNAME      LOC       
------- ---------- -------   
-    40 OPERATIONS BOSTON2
+DEPTNO DNAME      LOC       
+------ ---------- -------   
+    40 OPERATIONS BOSTON2
 
 ```
 
@@ -645,23 +645,23 @@ INSERT 완료 후 테이블 정보를 확인해 봅니다.
 ```sql
 select * from team;
 
-TEAM_ID NAME     POINTS   
-------- -------- ------   
-    301 Red Bull      0   
-    302 Ferrari       0   
-      2 Mercedes      0   
+TEAM_ID NAME     POINTS   
+------- -------- ------   
+    301 Red Bull      0   
+    302 Ferrari       0   
+      2 Mercedes      0   
 
 
 select * from driver;
 
-DRIVER_ID NAME            POINTS TEAM_ID   
---------- --------------- ------ -------   
-      101 Max Verstappen       0     301   
-      102 Sergio Perez         0     301   
-      103 Charles Leclerc      0     302   
-      104 Carlos Sainz Jr      0     302   
-      105 George Russell       0       2   
-      106 Lewis Hamilton       0       2
+DRIVER_ID NAME            POINTS TEAM_ID   
+--------- --------------- ------ -------   
+      101 Max Verstappen       0     301   
+      102 Sergio Perez         0     301   
+      103 Charles Leclerc      0     302   
+      104 Carlos Sainz Jr      0     302   
+      105 George Russell       0       2   
+      106 Lewis Hamilton       0       2
 ```
 
 **`RACE_DV` - Document 입력**
@@ -692,115 +692,115 @@ COMMIT;
 ```sql
 SELECT json_serialize(data PRETTY) FROM driver_dv;
 
-JSON_SERIALIZE(DATAPRETTY)                        
--------------------------------------------------------------------------------------------   
+JSON_SERIALIZE(DATAPRETTY)                        
+-------------------------------------------------------------------------------------------   
 {  
-  "_id" : 201,  
-  "_metadata" :  
-  {  
-    "etag" : "2E8DC09543DD25DC7D588FB9734D962B",  
-    "asof" : "000000001F40C8AC"  
-  },  
-  "name" : "Bahrain Grand Prix",  
-  "laps" : 57,  
-  "date" : "2022-03-20T00:00:00",  
-  "podium" :  
-  {  
-  },  
-  "result" :  
-  [  
-  ]  
-}         
+  "_id" : 201,  
+  "_metadata" :  
+  {  
+    "etag" : "2E8DC09543DD25DC7D588FB9734D962B",  
+    "asof" : "000000001F40C8AC"  
+  },  
+  "name" : "Bahrain Grand Prix",  
+  "laps" : 57,  
+  "date" : "2022-03-20T00:00:00",  
+  "podium" :  
+  {  
+  },  
+  "result" :  
+  [  
+  ]  
+}         
 {  
-  "_id" : 202,  
-  "_metadata" :  
-  {  
-    "etag" : "7E056A845212BFDE19E0C0D0CD549EA0",  
-    "asof" : "000000001F40C8AC"  
-  },  
-  "name" : "Saudi Arabian Grand Prix",  
-  "laps" : 50,  
-  "date" : "2022-03-27T00:00:00",  
-  "podium" :  
-  {  
-  },  
-  "result" :  
-  [  
-  ]  
-}   
+  "_id" : 202,  
+  "_metadata" :  
+  {  
+    "etag" : "7E056A845212BFDE19E0C0D0CD549EA0",  
+    "asof" : "000000001F40C8AC"  
+  },  
+  "name" : "Saudi Arabian Grand Prix",  
+  "laps" : 50,  
+  "date" : "2022-03-27T00:00:00",  
+  "podium" :  
+  {  
+  },  
+  "result" :  
+  [  
+  ]  
+}   
 {  
-  "_id" : 203,  
-  "_metadata" :  
-  {  
-    "etag" : "EA6E1194C012970CA07116EE1EF167E8",  
-    "asof" : "000000001F40C8AC"  
-  },  
-  "name" : "Australian Grand Prix",  
-  "laps" : 58,  
-  "date" : "2022-04-09T00:00:00",  
-  "podium" :  
-  {  
-  },  
-  "result" :  
-  [  
-  ]  
-}      
+  "_id" : 203,  
+  "_metadata" :  
+  {  
+    "etag" : "EA6E1194C012970CA07116EE1EF167E8",  
+    "asof" : "000000001F40C8AC"  
+  },  
+  "name" : "Australian Grand Prix",  
+  "laps" : 58,  
+  "date" : "2022-04-09T00:00:00",  
+  "podium" :  
+  {  
+  },  
+  "result" :  
+  [  
+  ]  
+}      
   
 
 SELECT json_serialize(data PRETTY) FROM race_dv;
 
-JSON_SERIALIZE(DATAPRETTY)                          
------------------------------------------------------------------------------------------   
+JSON_SERIALIZE(DATAPRETTY)                          
+-----------------------------------------------------------------------------------------   
 {  
-  "_id" : 201,  
-  "_metadata" :  
-  {  
-    "etag" : "2E8DC09543DD25DC7D588FB9734D962B",  
-    "asof" : "000000001F40CC48"  
-  },  
-  "name" : "Bahrain Grand Prix",  
-  "laps" : 57,  
-  "date" : "2022-03-20T00:00:00",  
-  "podium" :  
-  {  
-  },  
-  "result" :  
-  [  
-  ]  
-}         
+  "_id" : 201,  
+  "_metadata" :  
+  {  
+    "etag" : "2E8DC09543DD25DC7D588FB9734D962B",  
+    "asof" : "000000001F40CC48"  
+  },  
+  "name" : "Bahrain Grand Prix",  
+  "laps" : 57,  
+  "date" : "2022-03-20T00:00:00",  
+  "podium" :  
+  {  
+  },  
+  "result" :  
+  [  
+  ]  
+}         
 {  
-  "_id" : 202,  
-  "_metadata" :  
-  {  
-    "etag" : "7E056A845212BFDE19E0C0D0CD549EA0",  
-    "asof" : "000000001F40CC48"  
-  },  
-  "name" : "Saudi Arabian Grand Prix",  
-  "laps" : 50,  
-  "date" : "2022-03-27T00:00:00",  
-  "podium" :  
-  {  
-  },  
-  "result" :  
-  [  
-  ]  
-}   
+  "_id" : 202,  
+  "_metadata" :  
+  {  
+    "etag" : "7E056A845212BFDE19E0C0D0CD549EA0",  
+    "asof" : "000000001F40CC48"  
+  },  
+  "name" : "Saudi Arabian Grand Prix",  
+  "laps" : 50,  
+  "date" : "2022-03-27T00:00:00",  
+  "podium" :  
+  {  
+  },  
+  "result" :  
+  [  
+  ]  
+}   
 {  
-  "_id" : 203,  
-  "_metadata" :  
-  {  
-    "etag" : "EA6E1194C012970CA07116EE1EF167E8",  
-    "asof" : "000000001F40CC48"  
-  },  
-  "name" : "Australian Grand Prix",  
-  "laps" : 58,  
-  "date" : "2022-04-09T00:00:00",  
-  "podium" :  
-  {  
-  },  
-  "result" :  
-  [  
-  ]  
+  "_id" : 203,  
+  "_metadata" :  
+  {  
+    "etag" : "EA6E1194C012970CA07116EE1EF167E8",  
+    "asof" : "000000001F40CC48"  
+  },  
+  "name" : "Australian Grand Prix",  
+  "laps" : 58,  
+  "date" : "2022-04-09T00:00:00",  
+  "podium" :  
+  {  
+  },  
+  "result" :  
+  [  
+  ]  
 }
 ```
 
@@ -1250,14 +1250,14 @@ DELETE FROM race_dv dv WHERE dv.data."_id" = 201;
 
 select * from race;
 
-RACE_ID NAME                     LAPS RACE_DATE              PODIUM   
-------- ------------------------ ---- ---------------------- ------   
-    202 Saudi Arabian Grand Prix   50 3/27/2022, 12:00:00 AM {}       
-    203 Australian Grand Prix      58 4/9/2022, 12:00:00 AM  {}
+RACE_ID NAME                     LAPS RACE_DATE              PODIUM   
+------- ------------------------ ---- ---------------------- ------   
+    202 Saudi Arabian Grand Prix   50 3/27/2022, 12:00:00 AM {}       
+    203 Australian Grand Prix      58 4/9/2022, 12:00:00 AM  {}
 
 select * from driver_race_map;
 
-No data found
+No data found
 ```
 
 ## The Extreme Flexibility of JSON Duality Views
@@ -1273,7 +1273,7 @@ JSON Duality View 에 데이터를 Insert 한 후, 베이스 테이블에도 데
 ```sql
 SELECT name FROM race where race_id = 204;
 
-No data found
+No data found
 
 INSERT INTO race_dv VALUES ('{"_id" : 204,
                         "name"   : "Miami Grand Prix",
@@ -1283,9 +1283,9 @@ INSERT INTO race_dv VALUES ('{"_id" : 204,
 
 SELECT name FROM race where race_id = 204;
 
-NAME               
-----------------   
-Miami Grand Prix
+NAME               
+----------------   
+Miami Grand Prix
 ```
 
 반대로, Relational 테이블에 데이터를 Insert 한 후, JSON Duality View 에서 변경된 데이터를 확인합니다.
@@ -1294,7 +1294,7 @@ Miami Grand Prix
 SELECT json_serialize(data PRETTY)
 FROM race_dv WHERE json_value(data, '$._id') = 205;
 
-No data found
+No data found
 
 
 INSERT INTO race
