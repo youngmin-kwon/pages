@@ -4,7 +4,7 @@
   - [Database User 생성](#database-user-생성)
   - [SQL Firewall 구성](#sql-firewall-구성)
   - [SQL 테스트](#sql-테스트)
-  - [IP 접속 테스트](#ip-접속-테스트)
+  - [접속 테스트](#접속-테스트)
   - [Maintenance](#maintenance)
 
 Oracle Database Vault의 새로운 기능인 SQL Firewall 이 Oracle Database에 내장되었습니다.  
@@ -13,11 +13,11 @@ SQL Firewall 기능은 데이터베이스로 들어오는 모든 SQL 문을 검�
 
 SQL Firewall 은 허가된 SQL 문 또는 접속으로만 데이터베이스 접근를 제한하여 일반적인 데이터베이스 공격으로부터 실시간 보호를 제공합니다. SQL Injection, 비정상적인 액세스, Credential 도용 또는 남용으로 인한 위험을 완화해 줍니다.
 
-SQL Firewall 은 IPaddress, OS Username, OS Program name 등과 같은 Session Context 데이터를 사용하여 데이터베이스 계정이 데이터베이스에 연결하는 방법을 제한할 수 있습니다.
+SQL Firewall 은 IP address, OS Username, OS Program name 등과 같은 Session Context 데이터를 사용하여 데이터베이스 계정이 데이터베이스에 연결하는 방법을 제한할 수 있습니다.
 
 - 참고문서:
 	- [Oracle Documentation - SQL Firewall](https://www.oracle.com/pls/topic/lookup?ctx=en/database/oracle/oracle-database/23&id=DBSEG-GUID-F53EAE01-CE78-47F4-80AD-A0091BA3C434)
-	- [LiveLabs - DB Security - SQL Firewall](https://apexapps.oracle.com/pls/apex/r/dbpm/livelabs/view-workshop?wid=3875)
+	- [LiveLabs - DB Security - SQL Firewall](https://apexapps.oracle.com/pls/apex/r/dbpm/livelabs/view-workshop?wid=3875)
 
 ## Database User 생성
 
@@ -371,7 +371,7 @@ SQL Firewall 은 IPaddress, OS Username, OS Program name 등과 같은 Session 
               5 Cloud
   ```
 
-## IP 접속 테스트
+## 접속 테스트
 
 - Allowed IP 가 아닌 다른 클라이언트에서 접속
   ```
