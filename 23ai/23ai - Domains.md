@@ -117,14 +117,14 @@ Domain 은 Single-Column, Multi-Column, Flexible Domain 의 3가지 타입이 �
   `DESCRIBE` 를 사용하여 컬럼에 적용된 Domain 과 Null Constraint 를 확인할 수 있습니다. (19c SQLPlus 에서는 Domain 정보가 표시되지 않습니다.)
 
 	```sql
-	desc PERSON
-	
-	Name    Null?    Type                                  
-	------- -------- -----------------------------------   
-	P_ID             NUMBER(5)                             
-	P_NAME           VARCHAR2(50)                          
-	P_SAL            NUMBER                                
-	P_EMAIL NOT NULL VARCHAR2(100) DOMAIN MYEMAIL_DOMAIN   
+    desc PERSON
+    
+    Name    Null?    Type                                  
+    ------- -------- -----------------------------------   
+    P_ID             NUMBER(5)                             
+    P_NAME           VARCHAR2(50)                          
+    P_SAL            NUMBER                                
+    P_EMAIL NOT NULL VARCHAR2(100) DOMAIN MYEMAIL_DOMAIN    
 	```
 
 - 앞에서 잠깐 언급했듯이 Domain 속성에 대한 더 많은 정보를 얻기 위해 테이블 컬럼에 적용할 수 있는 새로운 Domain 관련 함수들이 있습니다.  예를 들어, `DOMAIN_NAME` 함수는 Domain 이름을 반환하고, `DOMAIN_DISPLAY` 함수는 Domain 에 정의된 DISPLAY 를 반환합니다.
@@ -132,13 +132,13 @@ Domain 은 Single-Column, Multi-Column, Flexible Domain 의 3가지 타입이 �
 	```sql
 	select p_name, domain_name(p_email), domain_display(p_email) from person;
 	
-	P_NAME	   DOMAIN_NAME(P_EMAIL)   DOMAIN_DISPLAY(P_EMAIL)
-	---------- ---------------------- -------------------------
-	Bold	   ADMIN.MYEMAIL_DOMAIN   missingmail.com
-	Schulte    ADMIN.MYEMAIL_DOMAIN   gmx.net
-	Walter	   ADMIN.MYEMAIL_DOMAIN   t_online.de
-	Schwinn    ADMIN.MYEMAIL_DOMAIN   oracle.com
-	King	   ADMIN.MYEMAIL_DOMAIN   aol.com
+    P_NAME     DOMAIN_NAME(P_EMAIL)   DOMAIN_DISPLAY(P_EMAIL)
+    ---------- ---------------------- -------------------------
+    Bold       ADMIN.MYEMAIL_DOMAIN   missingmail.com
+    Schulte    ADMIN.MYEMAIL_DOMAIN   gmx.net
+    Walter     ADMIN.MYEMAIL_DOMAIN   t_online.de
+    Schwinn    ADMIN.MYEMAIL_DOMAIN   oracle.com
+    King       ADMIN.MYEMAIL_DOMAIN   aol.com
 	```
 
 - 다양한 Data dictionary View 를 통해 SQL Domain 정보를 확인할 수 있습니다. - `USER_DOMAIN, USER_DOMAIN_COLS, USER_DOMAIN_CONSTRAINTS (ALL/DBA)`
@@ -162,13 +162,13 @@ Domain 은 Single-Column, Multi-Column, Flexible Domain 의 3가지 타입이 �
 
 - `DBMS_METADATA` 패키지를 사용하여 DDL 문을 추출할 수도 있습니다.
 	```sql
-	SELECT dbms_metadata.get_ddl('SQL_DOMAIN', 'MYEMAIL_DOMAIN') ;
+    SELECT dbms_metadata.get_ddl('SQL_DOMAIN', 'MYEMAIL_DOMAIN') ;
 
-	DBMS_METADATA.GET_DDL('SQL_DOMAIN','MYEMAIL_DOMAIN')                                                  
-	------------------------------------------------------------------------------------------------------
-	 CREATE DOMAIN "ADMIN"."MYEMAIL_DOMAIN" AS VARCHAR2(100) DEFAULT ON NULL 'XXXX' || '@missingmail.com'  
-	 CONSTRAINT "EMAIL_C" CHECK (regexp_like (myemail_domain, '^(\S+)\@(\S+)\.(\S+)$')) ENABLE  
-	 DISPLAY substr(myemail_domain, instr(myemail_domain, '@') + 1)
+    DBMS_METADATA.GET_DDL('SQL_DOMAIN','MYEMAIL_DOMAIN')                                                  
+    ------------------------------------------------------------------------------------------------------
+     CREATE DOMAIN "ADMIN"."MYEMAIL_DOMAIN" AS VARCHAR2(100) DEFAULT ON NULL 'XXXX' || '@missingmail.com'  
+     CONSTRAINT "EMAIL_C" CHECK (regexp_like (myemail_domain, '^(\S+)\@(\S+)\.(\S+)$')) ENABLE  
+     DISPLAY substr(myemail_domain, instr(myemail_domain, '@') + 1)
 	```
 
 ## Multi Column Domain
@@ -211,16 +211,16 @@ Multi Column Domain 을 사용하여 여러 컬럼에 걸친 Domain 을 생성�
 - 테이블 정보를 확인합니다.
 
 	```sql
-	desc addresses
-	
-	Name           Null? Type                              
-	-------------- ----- -------------------------------   
-	ID                   NUMBER                            
-	ADDRESS_LINE_1       VARCHAR2(50) DOMAIN ADDRESS_DOM   
-	ADDRESS_LINE_2       VARCHAR2(50) DOMAIN ADDRESS_DOM   
-	CITY                 VARCHAR2(50) DOMAIN ADDRESS_DOM   
-	COUNTRY_CODE         VARCHAR2(5) DOMAIN ADDRESS_DOM    
-	POSTCODE             VARCHAR2(10) DOMAIN ADDRESS_DOM
+    desc addresses
+    
+    Name           Null? Type                              
+    -------------- ----- -------------------------------   
+    ID                   NUMBER                            
+    ADDRESS_LINE_1       VARCHAR2(50) DOMAIN ADDRESS_DOM   
+    ADDRESS_LINE_2       VARCHAR2(50) DOMAIN ADDRESS_DOM   
+    CITY                 VARCHAR2(50) DOMAIN ADDRESS_DOM   
+    COUNTRY_CODE         VARCHAR2(5) DOMAIN ADDRESS_DOM    
+    POSTCODE             VARCHAR2(10) DOMAIN ADDRESS_DOM
 	```
 
 - 다음 테스트를 위해 생성한 객체들을 삭제합니다. 
@@ -432,7 +432,7 @@ Flexible Domain 은 데이터의 조건에 따라 여러 Domain 중 하나를 �
 
 - 테이블에 새로운 데이터를 Insert 하며 Flexible Domain 을 테스트합니다.  
 	```sql
-	- Domain 조건에 맞는 데이터는 정상적으로 INSERT
+	-- Domain 조건에 맞는 데이터는 정상적으로 INSERT
 	insert into addresses 
 	values (1, '1 my street', null, 'birmingham', 'GB', 'A12 BCD');
 	
@@ -452,8 +452,7 @@ Flexible Domain 은 데이터의 조건에 따라 여러 Domain 중 하나를 �
 	ADDRESS_LINE_1, CITY, COUNTRY_CODE, POSTCODE due to domain constraint
 	ADMIN.SYS_DOMAIN_C0054 of domain ADMIN.ADDRESS_FLEX_DOM violated
 	Help: https://docs.oracle.com/error-help/db/ora-11534/
-	
-	
+		
 	insert into addresses
 	values (5, '5 my street', null, 'boston', 'US', 'A12 BCD');
 	*
