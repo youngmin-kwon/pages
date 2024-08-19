@@ -5,7 +5,7 @@
   - [GROUP BY 구문에 컬럼 Alias 사용 가능](#group-by-구문에-컬럼-alias-사용-가능)
   - [FROM 절이 없는 SELECT 구문](#from-절이-없는-select-구문)
   - [Boolean Data Type](#boolean-data-type)
-  - [IF \[NOT\] EXISTS DDL 구문](#if-not-existsddl-구문)
+  - [IF \[NOT\] EXISTS DDL 구문](#if-not-existsddl-구문)
   - [New Table Value Constructor](#new-table-value-constructor)
   - [Joins in UPDATE and DELETE](#joins-in-update-and-delete)
   - [DEFAULT ON NULL FOR INSERT AND UPDATE](#default-on-null-for-insert-and-update)
@@ -227,18 +227,18 @@ insert into TEST_BOOLEAN (name, is_sleeping) values ('Ron',1);
 
 select name from test_boolean where not is_sleeping;
 
-NAME    
------   
-Mick    
+NAME    
+-----   
+Mick    
 Keith
 
 select * from test_boolean;
 
-NAME  IS_SLEEPING   
------ -----------   
-Mick            0   
-Keith           0   
-Ron             1
+NAME  IS_SLEEPING   
+----- -----------   
+Mick            0   
+Keith           0   
+Ron             1
 
 select dump(is_sleeping) from test_boolean where name = 'Ron';
 
@@ -252,18 +252,18 @@ Typ=252 Len=1: 1
 >SQLcl 의 경우 모든 버전에서 (23ai 포함) 1/0 으로 표시됩니다.
 
 
-## IF [NOT] EXISTS DDL 구문
+## IF [NOT] EXISTS DDL 구문
 
 ​Oracle Database 23ai 부터 새로운 `IF [NOT] EXISTS DDL` 구문을 사용하여 DDL 오류 처리 방법을 결정할 수 있습니다.  이 기능은 Object (테이블등)들이 존재하거나 존재하지 않아 발생하는 에러를 스크립트에서 숨길 수 있으므로 DDL 스크립트 작업을 단순화할 수 있습니다.
 
 ```sql
 desc dept
 
-Name   Null?    Type           
------- -------- ------------   
-DEPTNO NOT NULL NUMBER(2)      
-DNAME           VARCHAR2(14)   
-LOC             VARCHAR2(13)   
+Name   Null?    Type           
+------ -------- ------------   
+DEPTNO NOT NULL NUMBER(2)      
+DNAME           VARCHAR2(14)   
+LOC             VARCHAR2(13)   
 
 
 -- 존재하는 테이블 CREATE
@@ -273,23 +273,23 @@ create table if not exists dept (
 	loc varchar2(13)
 );
 
-Table DEPT created.
+Table DEPT created.
 
 
 -- 존재하지 않는 테이블 DROP
 drop table if exists dept1;
 
-Table DEPT1 dropped.
+Table DEPT1 dropped.
 
 -- CTAS
 create table if not exists dept1 as select * from dept;
 
-Table DEPT1 created.
+Table DEPT1 created.
 
 
 drop table if exists dept1;
 
-Table DEPT1 dropped.
+Table DEPT1 dropped.
 ```
 
 
@@ -313,21 +313,21 @@ create table if not exists test (
 
   ```sql
   insert into test values
-    (50,'HR','LOS ANGELES'), 
+    (50,'HR','LOS ANGELES'), 
     (60,'IT','SAN FRANCISCO'), 
     (70,'MANUFACTURING','DETROIT')
   ;
 
-  3 rows inserted.
+  3 rows inserted.
 
 
   select * from test;
 
-  DEPTNO DNAME         LOC             
-  ------ ------------- -------------   
-      50 HR            LOS ANGELES     
-      60 IT            SAN FRANCISCO   
-      70 MANUFACTURING DETROIT
+  DEPTNO DNAME         LOC             
+  ------ ------------- -------------   
+      50 HR            LOS ANGELES     
+      60 IT            SAN FRANCISCO   
+      70 MANUFACTURING DETROIT
   ```
 
 - **SELECT**
@@ -336,11 +336,11 @@ create table if not exists test (
   select * 
   from ( VALUES (50,'HR'), (60,'DEV'), (70,'AI') ) virt_dept (deptno, dname);
 
-  DEPTNO DNAME   
-  ------ -----   
-      50 HR      
-      60 DEV     
-      70 AI
+  DEPTNO DNAME   
+  ------ -----   
+      50 HR      
+      60 DEV     
+      70 AI
   ```
 
 - **WITH Clause**
@@ -353,11 +353,11 @@ create table if not exists test (
   ) 
   select * from vtab;
 
-  DEPTNO DNAME   
-  ------ -----   
-      50 HR      
-      60 DEV     
-      70 AI
+  DEPTNO DNAME   
+  ------ -----   
+      50 HR      
+      60 DEV     
+      70 AI
   ```
 
 ## Joins in UPDATE and DELETE
@@ -372,7 +372,7 @@ set e.sal=e.sal*2
 where e.deptno in 
 	(select d.deptno 
 	 from dept d 
-	 where e.deptno=d.deptno 
+	 where e.deptno=d.deptno 
 	 and d.dname='RESEARCH')
 ;
 ```
@@ -383,7 +383,7 @@ update emp e
 set e.sal=e.sal*2
 from dept d
 where e.deptno=d.deptno
-and d.dname='RESEARCH';   
+and d.dname='RESEARCH';   
 ```
 
 > ANSI Join 구문은 지원하지 않음.
