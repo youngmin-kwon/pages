@@ -9,4 +9,5 @@
 - [Oracle Database 23ai - Priority Transactions](./23ai%20-%20Priority%20Transactions.html)
 - [Oracle Database 23ai - SQL Domains](./23ai%20-%20Domains.html)
 - [Oracle Database 23ai - SQL Transpiler](./23ai%20-%20SQL%20Transpiler.html)
+- [Oracle Database 23ai - Aggregation over INTERVAL Data Types](./23ai%20-%20Aggregation%20Interval.html)
 
