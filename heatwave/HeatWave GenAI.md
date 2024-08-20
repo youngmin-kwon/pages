@@ -47,7 +47,7 @@ MySQL Database System 과 HeatWave Provisioning 과정은 다음과 같습니다
       - Matching Rules :
         - `"ALL{resource.type='mysqldbsystem', resource.compartment.id = '<compartment_id>' }"`
 <!--
-        - compartment_id = ocid1.compartment.oc1..aaaaaaaaqbxqpipylndoxf3ph6fitnj2fnakfxxcj7q4vmzeuvqjan6rlxaa 
+compartment_id = ocid1.compartment.oc1..aaaaaaaaqbxqpipylndoxf3ph6fitnj2fnakfxxcj7q4vmzeuvqjan6rlxaa 
 -->
 
   - Policy 설정 - 해당 Compartment 에 설정
