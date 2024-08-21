@@ -5,6 +5,8 @@
 
 - [Oracle Database 23ai - New Features for Developers](./23ai%20-%20New%20Features.html)
 
+- [Oracle Database 23ai - Lock-Free Reservation](./23ai%20-%20Lock-Free%20Reservations.html)
+
 - [Oracle Database 23ai - Database Firewall](./23ai%20-%20Database%20Firewall.html)
 
 - [Oracle Database 23ai - Schema Privileges](./23ai%20-%20Schema%20Privileges.html)
