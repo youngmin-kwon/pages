@@ -3,7 +3,7 @@
 
 - [Oracle Database 23ai - JSON Relational Duality View](./23ai%20-%20JSON%20Relational%20Duality%20View.html)
 
-- [Oracle Database 23ai - New Features for Developers](./23ai%20-%20New%20Features.html)
+- [Oracle Database 23ai - New Features for Developers](./23ai%20-%20New%20Features.md)
 
 - [Oracle Database 23ai - Lock-Free Reservation](./23ai%20-%20Lock-Free%20Reservations.html)
 
